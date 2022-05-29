@@ -65,7 +65,7 @@ class GiftStatsTable(OrmBase):
         line = GiftStatsTable.get_line(session, primary_keys)
         price = message.price * 100
         line.__dict__.update({'uname': message.uname, 'gname': message.gift_name, 'price': price})
-        line.num = 1 + (line.num if line.num else 0),
+        line.num = 1 + (line.num if line.num else 0)
         line.total = price + (line.total if line.total else 0)
 
 
