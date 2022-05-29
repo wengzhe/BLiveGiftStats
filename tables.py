@@ -12,6 +12,7 @@ from common import OrmBase
 
 
 class GiftType(enum.Enum):
+    ReservedLengthForStringTypedEnum = 0  # SQLite上，sqlalchemy似乎有BUG，让表的列宽等于最长的值，但是刚好最长的这个传进去会挂掉
     Gift = 1
     Guard = 2
     SuperChat = 3
