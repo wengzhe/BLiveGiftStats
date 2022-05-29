@@ -1,0 +1,4 @@
+aiohttp
+Brotli
+sqlalchemy
+pymysql
