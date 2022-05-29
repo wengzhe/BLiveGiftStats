@@ -63,8 +63,6 @@ db.init(config.database_url())
 
 
 def main():
-    config.load()
-    db.init(config.database_url())
     print(config.cfg)
     print(config.room_id())
 
