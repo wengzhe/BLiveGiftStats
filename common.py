@@ -56,7 +56,10 @@ class DB:
 
 
 config = Config()
+config.load()
+
 db = DB()
+db.init(config.database_url())
 
 
 def main():

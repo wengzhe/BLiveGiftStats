@@ -28,8 +28,6 @@ def show_all(room_id: int, gtype: GiftType):
 
 
 def main():
-    config.load()
-    db.init(config.database_url())
     app.run(host='::', debug=True)
 
 

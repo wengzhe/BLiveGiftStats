@@ -30,8 +30,6 @@ async def listen_rooms():
 
 
 def main():
-    config.load()
-    db.init(config.database_url())
     if config.web_port():
         # 如果使用debug模式，需要修改use_reloader为False，因为use_reloader预期自己在主线程
         threading.Thread(target=application.run, daemon=True,
