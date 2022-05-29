@@ -10,7 +10,7 @@ from common import config, db
 from handlers import GiftStatsHandler
 
 
-async def listen():
+async def listen_rooms():
     clients = [BLiveClient(room_id) for room_id in config.room_id()]
     handler = GiftStatsHandler(db)
     for client in clients:
@@ -27,11 +27,12 @@ async def listen():
         ))
 
 
-def main():
+async def main():
     config.load()
     db.init(config.database_url())
-    asyncio.get_event_loop().run_until_complete(listen())
+    live_future = asyncio.ensure_future(listen_rooms())
+    await asyncio.shield(live_future)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
