@@ -43,7 +43,7 @@ class DB:
     def session(self):
         return self._DbSession()
 
-    def run(self, func, *args, **kwargs):
+    def write(self, func, *args, **kwargs):
         with self.session() as session:
             func(*args, **kwargs, session=session)
             session.commit()
