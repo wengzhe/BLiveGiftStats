@@ -43,7 +43,7 @@ class DB:
 
     def init(self, url):
         self._engine = sqlalchemy.create_engine(url)
-        self._DbSession = sqlalchemy.orm.sessionmaker(bind=self._engine)
+        self._DbSession = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self._engine))
         OrmBase.metadata.create_all(self._engine)
 
     def session(self):
