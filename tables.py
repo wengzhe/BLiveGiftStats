@@ -29,7 +29,7 @@ class GiftStatsTable(OrmBase):
     num = sqlalchemy.Column(sqlalchemy.Integer)  # 礼物数量
     price = sqlalchemy.Column(sqlalchemy.Integer)  # 礼物单价
     total = sqlalchemy.Column(sqlalchemy.Integer)  # 礼物总价
-    time = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)  # 送礼时间戳
+    time = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, index=True)  # 送礼时间戳
 
     @staticmethod
     def get_line(session: Session, primary_keys: dict):
