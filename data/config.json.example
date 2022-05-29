@@ -6,5 +6,9 @@
         21449083,
         23105590
     ],
-    "db_url": "sqlite:///data/database.db"
+    "db_url": "sqlite:///data/database.db",
+    "web": {
+        "port": 8080,
+        "debug": true
+    }
 }

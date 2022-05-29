@@ -29,6 +29,12 @@ class Config:
     def database_url(self):
         return self.cfg.get('db_url', 'sqlite:///data/database.db')
 
+    def web_port(self):
+        return self.cfg.get('web', {}).get('port', 0)
+
+    def web_debug(self):
+        return self.cfg.get('web', {}).get('debug', False)
+
 
 class DB:
     def __init__(self):
