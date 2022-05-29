@@ -4,7 +4,7 @@ __author__ = 'WZ'
 
 from flask import Flask, Response
 
-from common import db
+from common import config, db
 from tables import GiftType, GiftStatsTable
 
 app = Flask(__name__)
@@ -25,3 +25,13 @@ def show_all(room_id: int, gtype: GiftType):
     with db.session() as session:
         lines = session.query(GiftStatsTable).filter_by(type=gtype, rid=room_id)
     return result + '\n'.join(f"{line.__dict__}" for line in lines)
+
+
+def main():
+    config.load()
+    db.init(config.database_url())
+    app.run(host='::', debug=True)
+
+
+if __name__ == "__main__":
+    main()
