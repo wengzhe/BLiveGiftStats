@@ -17,6 +17,14 @@ class GiftType(enum.Enum):
     Guard = 2
     SuperChat = 3
 
+    def to_string(self):
+        if self == self.Gift:
+            return '礼物'
+        if self == self.Guard:
+            return '上舰'
+        if self == self.SuperChat:
+            return 'SC'
+
 
 class GiftStatsTable(OrmBase):
     __tablename__ = 'gift_stats'

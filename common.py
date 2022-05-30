@@ -2,8 +2,10 @@
 # -*- coding:utf-8 -*-
 __author__ = 'WZ'
 
-import os
 import json
+import os
+import requests
+import time
 import sqlalchemy.exc
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
@@ -55,6 +57,22 @@ class DB:
             session.commit()
 
 
+class Utils:
+    @staticmethod
+    def render_markdown(md):
+        url = 'https://api.github.com/markdown'
+        data = {'text': md, 'mode': 'markdown'}
+        html = '<!DOCTYPE html><html>'
+        html += '<head><link rel="stylesheet" href="/static/md_github.css" type="text/css" /></head>'
+        html += '<body><article class="markdown-body">' + requests.post(url, json=data).text + '</article></body>'
+        html += '</html>'
+        return html
+
+    @staticmethod
+    def time_from_unix(value):
+        return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(value))
+
+
 config = Config()
 config.load()
 
@@ -65,6 +83,10 @@ db.init(config.database_url())
 def main():
     print(config.cfg)
     print(config.room_id())
+    print(config.database_url())
+    print(config.web_port())
+    print(config.web_debug())
+    print(Utils.render_markdown('#123'))
 
 
 if __name__ == "__main__":

@@ -3,3 +3,4 @@ Brotli
 sqlalchemy
 pymysql
 flask
+requests
