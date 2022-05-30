@@ -2,7 +2,9 @@
 # -*- coding:utf-8 -*-
 __author__ = 'WZ'
 
+import datetime
 import sqlalchemy
+from dateutil.relativedelta import relativedelta
 
 from common import db, Utils
 from tables import GiftType, GiftStatsTable
@@ -45,18 +47,54 @@ def get_query(url_args: dict, **kwargs):
     return "&".join(f"{k}={v}" for k, v in {**url_args, **kwargs}.items())
 
 
+def convert_time(t: str):
+    if '-' in t:
+        return Utils.time_param_to_unix(t)
+    return int(t)
+
+
+def get_nearest_past_day(day=15):
+    now = datetime.datetime.now()
+    now = now.replace(day=day, hour=0, minute=0, second=0, microsecond=0)
+    if now > datetime.datetime.now():
+        now -= relativedelta(months=1)
+    return now
+
+
 def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
     order_by = int(url_args.get('order', -len(gift_stats_line_list)))
     aggregate = url_args.get('aggregate', 'false').lower() == 'true'
+    min_time, max_time = url_args.get('min', None), url_args.get('max', None)
+    min_time = convert_time(min_time) if min_time else None
+    max_time = convert_time(max_time) if max_time else None
+
     md = f"# 房间 {room_id} 的 {gtype.to_string()} 情况\n"
-    md += f"[聚合](?{get_query(url_args, aggregate=not aggregate)})\n"
+
+    md += "常用功能： "
+    md += f"[{'取消' if aggregate else ''}聚合](?{get_query(url_args, aggregate=not aggregate)}) "
+    query = get_query(url_args, min=Utils.to_time_param(datetime.datetime.now() - datetime.timedelta(days=1)),
+                      max=Utils.to_time_param(datetime.datetime.now()))
+    md += f"[过去24小时](?{query}) "
+    month_split = get_nearest_past_day()
+    query = get_query(url_args, min=Utils.to_time_param(month_split),
+                      max=Utils.to_time_param(month_split + relativedelta(months=1) - datetime.timedelta(seconds=1)))
+    md += f"[本月](?{query}) "
+    query = get_query(url_args, min=Utils.to_time_param(month_split - relativedelta(months=1)),
+                      max=Utils.to_time_param(month_split - datetime.timedelta(seconds=1)))
+    md += f"[上月](?{query}) "
+    md += "\n"
+
     md += get_md_table_line(
         f'[{v.name}](?{get_query(url_args, order=-i if i == order_by else i)})'
         for i, v in enumerate(gift_stats_line_list, start=1))
     md += get_md_table_line([':--:'] * len(gift_stats_line_list))
     with db.session() as session:
-        lines = session.query(*(v.obj for v in gift_stats_line_list)) \
-            .filter_by(type=gtype, rid=room_id).order_by(get_order_obj(order_by))
+        lines = session.query(*(v.obj for v in gift_stats_line_list))
+        if min_time:
+            lines = lines.filter(GiftStatsTable.time >= min_time)
+        if max_time:
+            lines = lines.filter(GiftStatsTable.time <= max_time)
+        lines = lines.filter_by(type=gtype, rid=room_id).order_by(get_order_obj(order_by))
         if aggregate:
             lines = lines.group_by(GiftStatsTable.uid, GiftStatsTable.gid)
         else:

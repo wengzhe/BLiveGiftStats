@@ -72,6 +72,14 @@ class Utils:
     def time_from_unix(value):
         return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(value))
 
+    @staticmethod
+    def time_param_to_unix(value):
+        return int(time.mktime(time.strptime(value, '%Y%m%d-%H%M%S')))
+
+    @staticmethod
+    def to_time_param(value):
+        return value.strftime('%Y%m%d-%H%M%S')
+
 
 config = Config()
 config.load()
