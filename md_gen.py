@@ -39,7 +39,7 @@ def get_md_from_line(line):
 
 
 def get_order_obj(order_by: int):
-    key = getattr(GiftStatsTable, gift_stats_line_list[abs(order_by) - 1].key)
+    key = gift_stats_line_list[abs(order_by) - 1].obj
     return key.asc() if order_by > 0 else key.desc()
 
 
