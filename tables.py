@@ -17,13 +17,11 @@ class GiftType(enum.Enum):
     Guard = 2
     SuperChat = 3
 
+    def to_name(self):
+        return {self.Gift: '礼物', self.Guard: '上舰', self.SuperChat: 'SC'}[self]
+
     def to_string(self):
-        if self == self.Gift:
-            return '礼物'
-        if self == self.Guard:
-            return '上舰'
-        if self == self.SuperChat:
-            return 'SC'
+        return {self.Gift: 'Gift', self.Guard: 'Guard', self.SuperChat: 'SuperChat'}[self]
 
 
 class GiftStatsTable(OrmBase):
