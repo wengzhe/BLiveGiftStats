@@ -65,6 +65,7 @@ def get_useful_functions(gtype: GiftType, aggregate: bool, url_args: dict):
     funcs = [f"[{'取消' if aggregate else ''}聚合](?{get_query(url_args, aggregate=not aggregate)})"]
     query = get_query(url_args, min=Utils.to_time_param(datetime.datetime.now() - datetime.timedelta(days=1)),
                       max=Utils.to_time_param(datetime.datetime.now()))
+    funcs.append("")
     funcs.append(f"[过去24小时](?{query})")
     month_split = get_nearest_past_day()
     query = get_query(url_args, min=Utils.to_time_param(month_split),
@@ -73,6 +74,7 @@ def get_useful_functions(gtype: GiftType, aggregate: bool, url_args: dict):
     query = get_query(url_args, min=Utils.to_time_param(month_split - relativedelta(months=1)),
                       max=Utils.to_time_param(month_split - datetime.timedelta(seconds=1)))
     funcs.append(f"[上月](?{query})")
+    funcs.append(f"[全部记录](?{get_query({k: v for k, v in url_args.items() if k not in ('min', 'max')})})")
     funcs.append("")
     for gift_type in (GiftType.Gift, GiftType.Guard, GiftType.SuperChat):
         if gift_type != gtype:
