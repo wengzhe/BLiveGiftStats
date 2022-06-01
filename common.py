@@ -3,8 +3,8 @@
 __author__ = 'WZ'
 
 import json
+import markdown
 import os
-import requests
 import time
 import sqlalchemy.exc
 import sqlalchemy.ext.declarative
@@ -60,12 +60,11 @@ class DB:
 class Utils:
     @staticmethod
     def render_markdown(md):
-        url = 'https://api.github.com/markdown'
-        data = {'text': md, 'mode': 'markdown'}
         html = '<!DOCTYPE html><html>'
         html += '<head><link rel="stylesheet" href="/static/md_github.css" type="text/css" /></head>'
-        html += '<body><article class="markdown-body">' + requests.post(url, json=data).text + '</article></body>'
-        html += '</html>'
+        html += '<body><article class="markdown-body">'
+        html += markdown.markdown(md, extensions=['markdown.extensions.tables'])
+        html += '</article></body></html>'
         return html
 
     @staticmethod

@@ -93,7 +93,7 @@ def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
 
     md += "常用功能： "
     md += " | ".join(get_useful_functions(gtype, aggregate, url_args))
-    md += "\n"
+    md += "\n\n"
 
     md += get_md_table_line(
         f'[{v.name}](?{get_query(url_args, order=-i if i == order_by else i)})'
