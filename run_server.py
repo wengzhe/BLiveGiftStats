@@ -1,6 +1,6 @@
 import os
 import sys
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
+sys.path.insert(0, os.path.split(os.path.realpath(__file__))[0])
 
 from web_app import app as application
 
