@@ -65,4 +65,4 @@ target/
 
 # Data
 config.json
-database.db
+*.db
