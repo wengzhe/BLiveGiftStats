@@ -44,7 +44,7 @@ class DB:
         self._DbSession = None
 
     def init(self, url):
-        self._engine = sqlalchemy.create_engine(url)
+        self._engine = sqlalchemy.create_engine(url, pool_pre_ping=True, pool_recycle=1800)
         self._DbSession = sqlalchemy.orm.scoped_session(sqlalchemy.orm.sessionmaker(bind=self._engine))
         OrmBase.metadata.create_all(self._engine)
 
