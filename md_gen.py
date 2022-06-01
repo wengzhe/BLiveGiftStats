@@ -44,7 +44,8 @@ def get_order_obj(order_by: int):
 
 
 def get_query(url_args: dict, **kwargs):
-    return "&".join(f"{k}={v}" for k, v in {**url_args, **kwargs}.items())
+    query = "&".join(f"{k}={v}" for k, v in {**url_args, **kwargs}.items())
+    return f"?{query}" if query else ''
 
 
 def convert_time(t: str):
@@ -62,23 +63,23 @@ def get_nearest_past_day(day=15):
 
 
 def get_useful_functions(gtype: GiftType, aggregate: bool, url_args: dict):
-    funcs = [f"[{'取消' if aggregate else ''}聚合](?{get_query(url_args, aggregate=not aggregate)})"]
+    funcs = [f"[{'取消' if aggregate else ''}聚合]({get_query(url_args, aggregate=not aggregate)})"]
     query = get_query(url_args, min=Utils.to_time_param(datetime.datetime.now() - datetime.timedelta(days=1)),
                       max=Utils.to_time_param(datetime.datetime.now()))
     funcs.append("")
-    funcs.append(f"[过去24小时](?{query})")
+    funcs.append(f"[过去24小时]({query})")
     month_split = get_nearest_past_day()
     query = get_query(url_args, min=Utils.to_time_param(month_split),
                       max=Utils.to_time_param(month_split + relativedelta(months=1) - datetime.timedelta(seconds=1)))
-    funcs.append(f"[本月](?{query})")
+    funcs.append(f"[本月]({query})")
     query = get_query(url_args, min=Utils.to_time_param(month_split - relativedelta(months=1)),
                       max=Utils.to_time_param(month_split - datetime.timedelta(seconds=1)))
-    funcs.append(f"[上月](?{query})")
-    funcs.append(f"[全部记录](?{get_query({k: v for k, v in url_args.items() if k not in ('min', 'max')})})")
+    funcs.append(f"[上月]({query})")
+    funcs.append(f"[全部记录]({get_query({k: v for k, v in url_args.items() if k not in ('min', 'max')})})")
     funcs.append("")
     for gift_type in (GiftType.Gift, GiftType.Guard, GiftType.SuperChat):
         if gift_type != gtype:
-            funcs.append(f"[{gift_type.to_name()}]({gift_type.to_string()}?{get_query(url_args)})")
+            funcs.append(f"[{gift_type.to_name()}]({gift_type.to_string()}{get_query(url_args)})")
     return funcs
 
 
@@ -96,7 +97,7 @@ def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
     md += "\n\n"
 
     md += get_md_table_line(
-        f'[{v.name}](?{get_query(url_args, order=-i if i == order_by else i)})'
+        f'[{v.name}]({get_query(url_args, order=-i if i == order_by else i)})'
         for i, v in enumerate(gift_stats_line_list, start=1))
     md += get_md_table_line([':--:'] * len(gift_stats_line_list))
     with db.session() as session:
