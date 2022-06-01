@@ -9,7 +9,7 @@ from blivedm.blivedm import BLiveClient
 
 from common import config, db
 from handlers import GiftStatsHandler
-from web_server import app as application
+from web_app import app as application
 
 
 async def listen_rooms():
