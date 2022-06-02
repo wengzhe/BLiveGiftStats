@@ -34,11 +34,11 @@ class Config:
     def web_port(self):
         return self.cfg.get('web', {}).get('port', 0)
 
-    def live_default(self):
-        return self.cfg.get('web', {}).get('live', {}).get('default', 0)
-
     def web_debug(self):
         return self.cfg.get('web', {}).get('debug', False)
+
+    def live_default(self):
+        return self.cfg.get('live', {}).get('default', 0)
 
 
 class DB:
@@ -98,6 +98,7 @@ def main():
     print(config.database_url())
     print(config.web_port())
     print(config.web_debug())
+    print(config.live_default())
     print(Utils.render_markdown('#123'))
 
 
