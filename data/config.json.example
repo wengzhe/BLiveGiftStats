@@ -9,6 +9,9 @@
     "db_url": "sqlite:///data/database.db",
     "web": {
         "port": 8080,
-        "debug": false
+        "debug": false,
+        "live": {
+            "default": 12235923
+        }
     }
 }
