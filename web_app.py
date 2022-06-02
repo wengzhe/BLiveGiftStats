@@ -25,7 +25,7 @@ def root():
 def show_live_all(room_id: int, gtype: str):
     text = get_md_from_room_gift(room_id, GiftType[gtype], dict(request.args))
     if request.args.get('render', '').lower() != 'false':
-        text = Utils.render_markdown(text)
+        text = Utils.render_markdown(text, f"房间 {room_id} 的 {GiftType[gtype].to_name()} 情况\n")
     return text
 
 

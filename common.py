@@ -64,9 +64,10 @@ class DB:
 
 class Utils:
     @staticmethod
-    def render_markdown(md):
+    def render_markdown(md, title):
         html = '<!DOCTYPE html><html>'
-        html += '<head><link rel="stylesheet" href="/static/md_github.css" type="text/css" /></head>'
+        html += '<head><meta charset="utf-8">' + f'<title>{title}</title>'
+        html += '<link rel="stylesheet" href="/static/md_github.css" type="text/css" /></head>'
         html += '<body><article class="markdown-body">'
         html += markdown.markdown(md, extensions=['markdown.extensions.tables'])
         html += '</article></body></html>'
