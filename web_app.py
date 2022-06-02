@@ -20,8 +20,8 @@ def root():
     return empty_response()
 
 
-@app.route('/l/<room_id>/<gtype>')
-@app.route('/live/<room_id>/<gtype>')
+@app.route('/l/<int:room_id>/<string:gtype>')
+@app.route('/live/<int:room_id>/<string:gtype>')
 def show_live_all(room_id: int, gtype: str):
     text = get_md_from_room_gift(room_id, GiftType[gtype], dict(request.args))
     if request.args.get('render', '').lower() != 'false':
@@ -29,8 +29,8 @@ def show_live_all(room_id: int, gtype: str):
     return text
 
 
-@app.route('/l/<gtype>')
-@app.route('/live/<gtype>')
+@app.route('/l/<string:gtype>')
+@app.route('/live/<string:gtype>')
 def show_live_default(gtype: str):
     if config.live_default():
         return show_live_all(config.live_default(), gtype)
