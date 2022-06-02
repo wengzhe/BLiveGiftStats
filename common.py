@@ -100,7 +100,7 @@ def main():
     print(config.web_port())
     print(config.web_debug())
     print(config.live_default())
-    print(Utils.render_markdown('#123'))
+    print(Utils.render_markdown('#123', ''))
 
 
 if __name__ == "__main__":
