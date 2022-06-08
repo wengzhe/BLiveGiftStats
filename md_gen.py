@@ -20,7 +20,7 @@ class GiftStatsLine:
 
 gift_stats_line_list = [
     GiftStatsLine('uid', 'uid', GiftStatsTable.uid, lambda i: i),
-    GiftStatsLine('uname', '用户名', sqlalchemy.func.max(GiftStatsTable.uname), lambda i: i),
+    GiftStatsLine('uname', '用户名', sqlalchemy.func.max(GiftStatsTable.uname), lambda i: f'`{i}`'),
     GiftStatsLine('gid', '礼物id', GiftStatsTable.gid, lambda i: i),
     GiftStatsLine('gname', '礼物名', sqlalchemy.func.max(GiftStatsTable.gname), lambda i: i),
     GiftStatsLine('num', '数量', sqlalchemy.func.sum(GiftStatsTable.num), lambda i: i),
