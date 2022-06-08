@@ -35,8 +35,8 @@ def get_md_table_line(items):
     return '|' + '|'.join(str(i) for i in items) + '|\n'
 
 
-def get_md_from_line(line):
-    return get_md_table_line(v.func(line[i]) for i, v in enumerate(gift_stats_line_list))
+def get_md_from_line(line, i):
+    return get_md_table_line([f'{i}'] + [v.func(line[i]) for i, v in enumerate(gift_stats_line_list)])
 
 
 def get_order_obj(order_by: int):
@@ -97,10 +97,10 @@ def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
     md += " | ".join(get_useful_functions(gtype, aggregate, url_args))
     md += "\n\n"
 
-    md += get_md_table_line(
-        f'[{v.name}]({get_query(url_args, order=-i if i == order_by else i)})'
-        for i, v in enumerate(gift_stats_line_list, start=1))
-    md += get_md_table_line([':--:'] * len(gift_stats_line_list))
+    md += get_md_table_line([' '] +
+                            [f'[{v.name}]({get_query(url_args, order=-i if i == order_by else i)})'
+                             for i, v in enumerate(gift_stats_line_list, start=1)])
+    md += get_md_table_line([':--:'] * (len(gift_stats_line_list) + 1))
     with db.session() as session:
         lines = session.query(*(v.obj for v in gift_stats_line_list))
         if min_time:
@@ -112,7 +112,7 @@ def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
             lines = lines.group_by(GiftStatsTable.uid, GiftStatsTable.gid)
         else:
             lines = lines.group_by(GiftStatsTable.uid, GiftStatsTable.gid, GiftStatsTable.time)
-    md += ''.join(get_md_from_line(line) for line in lines)
+    md += ''.join(get_md_from_line(line, i + 1) for i, line in enumerate(lines))
     return md
 
 
