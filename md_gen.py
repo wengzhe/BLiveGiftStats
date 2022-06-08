@@ -20,6 +20,7 @@ class GiftStatsLine:
 
 gift_stats_line_list = [
     GiftStatsLine('uid', 'uid', GiftStatsTable.uid, lambda i: i),
+    # TODO: 可以考虑用 markdown.Markdown.ESCAPED_CHARS 来做用户名转义，不过目前用户名仅允许'-'和'_'所以应该还好
     GiftStatsLine('uname', '用户名', sqlalchemy.func.max(GiftStatsTable.uname), lambda i: f'`{i}`'),
     GiftStatsLine('gid', '礼物id', GiftStatsTable.gid, lambda i: i),
     GiftStatsLine('gname', '礼物名', sqlalchemy.func.max(GiftStatsTable.gname), lambda i: i),
