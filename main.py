@@ -30,6 +30,7 @@ async def listen_rooms():
 
 
 def main():
+    db.create_all()  # 如果Table不存在，则创建Table
     if config.web_port():
         # 如果使用debug模式，需要修改use_reloader为False，因为use_reloader预期自己在主线程
         threading.Thread(target=application.run, daemon=True,

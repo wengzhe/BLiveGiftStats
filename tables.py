@@ -8,7 +8,7 @@ from sqlalchemy.orm.session import Session
 
 from blivedm.blivedm import GiftMessage, GuardBuyMessage, SuperChatMessage
 
-from common import OrmBase, db
+from common import OrmBase
 
 
 class GiftType(enum.Enum):
@@ -74,9 +74,6 @@ class GiftStatsTable(OrmBase):
         line.__dict__.update({'uname': message.uname, 'gname': message.gift_name, 'price': price})
         line.num = 1 + (line.num if line.num else 0)
         line.total = price + (line.total if line.total else 0)
-
-
-db.create_all()
 
 
 def main():
