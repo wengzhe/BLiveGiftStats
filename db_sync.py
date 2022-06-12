@@ -23,7 +23,7 @@ def get_lines(session, room_id: int, min_time: int = None, max_time: int = None)
 
 def get_key_from_line(line: GiftStatsTable):
     # inspect(GiftStatsTable).primary_key
-    return line.type, line.rid, line.uid, line.gid, line.time
+    return line.time, line.type, line.rid, line.uid, line.gid
 
 
 def get_other_column_from_line(line: GiftStatsTable):
@@ -68,7 +68,7 @@ def compare_with(remote, room_id: int, min_time: int = None, max_time: int = Non
         local_lines = get_dict_from_lines(get_lines(session, room_id, min_time, max_time))
     with remote.session() as session:
         remote_lines = get_dict_from_lines(get_lines(session, room_id, min_time, max_time))
-    keys = set(local_lines.keys()) | set(remote_lines.keys())
+    keys = sorted(set(local_lines.keys()) | set(remote_lines.keys()), reverse=True)
     result = [(local_lines.get(key, None), remote_lines.get(key, None)) for key in keys]
     return [(transfer_direction(local, remote), local, remote) for local, remote in result]
 
