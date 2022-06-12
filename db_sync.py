@@ -68,7 +68,7 @@ def compare_with(remote, room_id: int, min_time: int = None, max_time: int = Non
         local_lines = get_dict_from_lines(get_lines(session, room_id, min_time, max_time))
     with remote.session() as session:
         remote_lines = get_dict_from_lines(get_lines(session, room_id, min_time, max_time))
-    keys = sorted(set(local_lines.keys()) | set(remote_lines.keys()), reverse=True)
+    keys = sorted(set(local_lines.keys()) | set(remote_lines.keys()), reverse=True, key=lambda line: line[0])
     result = [(local_lines.get(key, None), remote_lines.get(key, None)) for key in keys]
     return [(transfer_direction(local, remote), local, remote) for local, remote in result]
 
