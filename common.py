@@ -31,6 +31,9 @@ class Config:
     def database_url(self):
         return self.cfg.get('db_url', 'sqlite:///data/database.db')
 
+    def sync_database_url(self):
+        return self.cfg.get('sync_db_url', '')
+
     def web_port(self):
         return self.cfg.get('web', {}).get('port', 0)
 
@@ -79,7 +82,9 @@ class Utils:
 
     @staticmethod
     def time_param_to_unix(value):
-        return int(time.mktime(time.strptime(value, '%Y%m%d-%H%M%S')))
+        if '-' in value:
+            return int(time.mktime(time.strptime(value, '%Y%m%d-%H%M%S')))
+        return int(value)
 
     @staticmethod
     def to_time_param(value):

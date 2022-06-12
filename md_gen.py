@@ -49,12 +49,6 @@ def get_query(url_args: dict, **kwargs):
     return f"?{query}" if query else ''
 
 
-def convert_time(t: str):
-    if '-' in t:
-        return Utils.time_param_to_unix(t)
-    return int(t)
-
-
 def get_nearest_past_day(day=15):
     now = datetime.datetime.now()
     now = now.replace(day=day, hour=0, minute=0, second=0, microsecond=0)
@@ -88,8 +82,8 @@ def get_md_from_room_gift(room_id: int, gtype: GiftType, url_args: dict):
     order_by = int(url_args.get('order', -len(gift_stats_line_list)))
     aggregate = url_args.get('aggregate', 'false').lower() == 'true'
     min_time, max_time = url_args.get('min', None), url_args.get('max', None)
-    min_time = convert_time(min_time) if min_time else None
-    max_time = convert_time(max_time) if max_time else None
+    min_time = Utils.time_param_to_unix(min_time) if min_time else None
+    max_time = Utils.time_param_to_unix(max_time) if max_time else None
 
     md = f"# 房间 {room_id} 的 {gtype.to_name()} 情况\n"
 
