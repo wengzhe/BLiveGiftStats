@@ -28,7 +28,7 @@ class GiftStatsTable(OrmBase):
     __tablename__ = 'gift_stats'
     type = sqlalchemy.Column(sqlalchemy.Enum(GiftType), primary_key=True)  # 礼物类型
     rid = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)  # room id
-    uid = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)  # user id
+    uid = sqlalchemy.Column(sqlalchemy.BigInteger, primary_key=True)  # user id
     uname = sqlalchemy.Column(sqlalchemy.Unicode(100))  # user name
     gid = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)  # gift id
     gname = sqlalchemy.Column(sqlalchemy.Unicode(50))  # gift name
