@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 __author__ = 'WZ'
 
+import datetime
+from dateutil.relativedelta import relativedelta
 import json
 import markdown
 import os
@@ -89,6 +91,21 @@ class Utils:
     @staticmethod
     def to_time_param(value):
         return value.strftime('%Y%m%d-%H%M%S')
+
+    @staticmethod
+    def get_query(url_args: dict, **kwargs):
+        query = "&".join(f"{k}={v}" for k, v in {**url_args, **kwargs}.items())
+        return f"?{query}" if query else ''
+
+    @staticmethod
+    def get_min_max_time(url_args: dict):
+        min_time, max_time = url_args.get('min', None), url_args.get('max', None)
+        min_time = Utils.time_param_to_unix(min_time) if min_time else None
+        max_time = Utils.time_param_to_unix(max_time) if max_time else None
+        if min_time is None and max_time is None:
+            min_time = datetime.datetime.now() - relativedelta(days=7)  # 默认只显示最多7天
+            min_time = int(time.mktime(min_time.timetuple()))
+        return min_time, max_time
 
 
 config = Config()

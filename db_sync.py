@@ -79,7 +79,16 @@ def get_sync_md_line(direction: TransferDirection, local: GiftStatsTable, remote
         [*key, *get_other_column_from_line(local), direction.to_string(), *get_other_column_from_line(remote)])
 
 
-def db_sync(url, room_id: int, min_time: int = None, max_time: int = None, dry_run: bool = True):
+def get_useful_functions(room_id: int, url_args: dict):
+    url_args = {k: v for k, v in url_args.items() if k not in ('dry_run',)}
+    funcs = [
+        f"[全量]({Utils.get_query({k: v for k, v in url_args.items() if k not in ('max',)}, min='20000101-000000')})",
+        f"[默认时间]({room_id}{Utils.get_query({k: v for k, v in url_args.items() if k not in ('min', 'max')})})", "",
+        f"[Go!]({Utils.get_query(url_args, dry_run='false')})"]
+    return funcs
+
+
+def db_sync(url, room_id: int, min_time: int = None, max_time: int = None, dry_run: bool = True, url_args: dict = None):
     remote = DB()
     remote.init(url)
     diff = compare_with(remote, room_id, min_time, max_time)
@@ -90,8 +99,15 @@ def db_sync(url, room_id: int, min_time: int = None, max_time: int = None, dry_r
             db.write(lambda session: [session.merge(item) for item in to_local])
         if to_remote:
             remote.write(lambda session: [session.merge(item) for item in to_remote])
-    return get_md_table_line([' '] * 16) + get_md_table_line([':--:'] * 16) + ''.join(
+
+    md = f"# Sync {room_id}{' (Dry Run)' if dry_run else ''}\n"
+    md += "常用功能： "
+    md += " | ".join(get_useful_functions(room_id, url_args))
+    md += "\n\n"
+    md += get_md_table_line([' '] * 16) + get_md_table_line([':--:'] * 16)
+    md += ''.join(
         get_sync_md_line(direction, local, remote) for direction, local, remote in diff if direction.to_string())
+    return md
 
 
 def main():
