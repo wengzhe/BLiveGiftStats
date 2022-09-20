@@ -42,11 +42,11 @@ class Config:
     def web_debug(self):
         return self.cfg.get('web', {}).get('debug', False)
 
-    def web_start_day_of_month(self):
-        return self.cfg.get('web', {}).get('start_day', 1)
+    def display_start_day_of_month(self):
+        return self.cfg.get('display', {}).get('start_day', 1)
 
-    def web_default_range(self):
-        return self.cfg.get('web', {}).get('default_range', 7)
+    def display_default_range(self):
+        return self.cfg.get('display', {}).get('default_range', 7)
 
     def live_default(self):
         return self.cfg.get('live', {}).get('default', 0)
@@ -109,14 +109,14 @@ class Utils:
         min_time = Utils.time_param_to_unix(min_time) if min_time else None
         max_time = Utils.time_param_to_unix(max_time) if max_time else None
         if min_time is None and max_time is None:
-            min_time = datetime.datetime.now() - relativedelta(days=config.web_default_range())  # 默认只显示最多7天
+            min_time = datetime.datetime.now() - relativedelta(days=config.display_default_range())  # 默认只显示最多7天
             min_time = int(time.mktime(min_time.timetuple()))
         return min_time, max_time
 
     @staticmethod
     def get_nearest_past_day(day=None):
         now = datetime.datetime.now()
-        day = day if day else config.web_start_day_of_month()
+        day = day if day else config.display_start_day_of_month()
         now = now.replace(day=day, hour=0, minute=0, second=0, microsecond=0)
         if now > datetime.datetime.now():
             now -= relativedelta(months=1)
