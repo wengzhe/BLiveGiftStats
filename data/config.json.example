@@ -10,7 +10,9 @@
     "sync_db_url": "mysql+pymysql://user:pass@server:port/db",
     "web": {
         "port": 8080,
-        "debug": false
+        "debug": false,
+        "default_range": 7,
+        "start_day": 1
     },
     "live": {
         "default": 12235923

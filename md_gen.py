@@ -44,21 +44,13 @@ def get_order_obj(order_by: int):
     return key.asc() if order_by > 0 else key.desc()
 
 
-def get_nearest_past_day(day=15):
-    now = datetime.datetime.now()
-    now = now.replace(day=day, hour=0, minute=0, second=0, microsecond=0)
-    if now > datetime.datetime.now():
-        now -= relativedelta(months=1)
-    return now
-
-
 def get_useful_functions(gtype: GiftType, aggregate: bool, url_args: dict):
     funcs = [f"[{'取消' if aggregate else ''}聚合]({Utils.get_query(url_args, aggregate=not aggregate)})"]
     query = Utils.get_query(url_args, min=Utils.to_time_param(datetime.datetime.now() - datetime.timedelta(days=1)),
                             max=Utils.to_time_param(datetime.datetime.now()))
     funcs.append("")
     funcs.append(f"[过去24小时]({query})")
-    month_split = get_nearest_past_day()
+    month_split = Utils.get_nearest_past_day()
     query = Utils.get_query(url_args, min=Utils.to_time_param(month_split),
                             max=Utils.to_time_param(
                                 month_split + relativedelta(months=1) - datetime.timedelta(seconds=1)))
