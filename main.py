@@ -16,7 +16,7 @@ async def listen_rooms():
     clients = [BLiveClient(room_id) for room_id in config.room_id()]
     handler = GiftStatsHandler(db)
     for client in clients:
-        client.add_handler(handler)
+        client.set_handler(handler)
         client.start()
 
     try:

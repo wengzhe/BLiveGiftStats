@@ -4,8 +4,7 @@ ARG EXT_DATA_PATH='/mnt/data'
 WORKDIR "${BASE_PATH}"
 
 # 后端依赖
-COPY blivedm/requirements.txt ./
-RUN pip3 install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+COPY blivedm/requirements.txt blivedm/
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 

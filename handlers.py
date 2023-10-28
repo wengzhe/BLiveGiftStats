@@ -3,7 +3,7 @@
 __author__ = 'WZ'
 
 from blivedm.blivedm import BaseHandler, BLiveClient
-from blivedm.blivedm import GiftMessage, GuardBuyMessage, SuperChatMessage
+from blivedm.blivedm.models.web import GiftMessage, GuardBuyMessage, SuperChatMessage
 
 from tables import GiftStatsTable
 

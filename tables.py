@@ -6,7 +6,7 @@ import enum
 import sqlalchemy
 from sqlalchemy.orm.session import Session
 
-from blivedm.blivedm import GiftMessage, GuardBuyMessage, SuperChatMessage
+from blivedm.blivedm.models.web import GiftMessage, GuardBuyMessage, SuperChatMessage
 
 from common import OrmBase
 

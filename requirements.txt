@@ -1,5 +1,4 @@
-aiohttp
-Brotli
+-r blivedm/requirements.txt
 sqlalchemy
 pymysql
 flask
